@@ -1,19 +1,9 @@
-export const createProduct = (req, res) => {
-
-    res.status(200).json({message: "Tudo certo"})
-}
-
 export const getAllProducts = (req, res) => {
 
-    res.status(200).json({message: "Tudo certo"})
+    res.status(200).json({message: "Ok1"})
 }
 
-export const editProduct = (req, res) => {
+export const detailProduct = (req, res) => {
 
-    res.status(200).json({message: "Tudo certo"})
-}
-
-export const deleteProduct = (req, res) => {
-
-    res.status(200).json({message: "Tudo certo"})
+    res.status(200).json({message: "Ok2"})
 }

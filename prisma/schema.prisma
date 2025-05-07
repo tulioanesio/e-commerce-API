@@ -6,23 +6,22 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
+  id    String     @id @default(auto()) @map("_id") @db.ObjectId
   email String  @unique
   name  String
   password  String
 }
 
-model Product {
-  id    Int     @id @default(autoincrement())
-  name String  
-  price  Int
-}
+// model Product {
+//   id    Int     @id @default(autoincrement())
+//   name String  
+//   price  Int
+// }
