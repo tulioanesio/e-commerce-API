@@ -9,7 +9,14 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const registerUser = async (req, res) => {
-  try {
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br)$/;
+    
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Email inválido, precisa conter um domínio válido!" });
+    }
+  
+    try {
     const user = req.body;
 
     const salt = await bcrypt.genSalt(10);
@@ -25,7 +32,7 @@ export const registerUser = async (req, res) => {
     res.status(201).json(userDB);
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: "Erro no servidor!" });
+    res.status(500).json({ message: "Server error!" });
   }
 };
 
@@ -38,19 +45,19 @@ export const loginUser = async (req, res) => {
       });
   
       if (!user) {
-        return res.status(404).json({ message: "Usuário não encontrado!" });
+        return res.status(404).json({ message: "User not found!" });
       }
   
       const isMatch = await bcrypt.compare(userInfo.password, user.password);
   
       if (!isMatch) {
-        return res.status(400).json({ message: "Senha inválida" });
+        return res.status(400).json({ message: "Invalid password" });
       }
   
       const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1d" });
   
       res.status(200).json(token);
     } catch (err) {
-      res.status(500).json({ message: "Erro no servidor!" });
+      res.status(500).json({ message: "Server error!" });
     }
   };

@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    return res.status(401).json({ message: "Acesso negado!" });
+    return res.status(401).json({ message: "Acess denied!" });
 
   }
 
@@ -15,7 +15,7 @@ const auth = (req, res, next) => {
 
     req.userId = decoded.id;
   } catch (err) {
-    return res.status(401).json({ message: "Token invalido!" });
+    return res.status(401).json({ message: "Invalid token!" });
   }
 
   next();
