@@ -98,42 +98,6 @@ The project is deployed online via **Vercel**:
 
 - [**E-commerce API**](https://e-commerce-api.vercel.app/)
 
-## API Routes
 
-### Users
-
-- **POST /register**: Creates a user account.
-- **POST /login**: Authenticates the user and returns a JWT.
-
-### Products
-
-- **POST /products**: Adds a new product to the catalog (requires authentication).
-- **GET /products**: Lists all products.
-- **GET /products/:id**: Shows details of a specific product.
-- **PUT /products/:id**: Updates product information.
-- **DELETE /products/:id**: Removes a product from the catalog.
-
-### Cart
-
-- **POST /cart**: Adds an item to the cart (requires authentication).
-- **GET /cart**: Displays the user's cart items (requires authentication).
-- **DELETE /cart/:productId**: Removes an item from the cart (requires authentication).
-
-### Orders
-
-- **POST /orders**: Creates an order from the cart items (requires authentication).
-- **GET /orders**: Lists all orders made by an authenticated user.
-
-## Contributing
-
-Contributions are welcome! If you wish to improve or add features to the project, follow these steps:
-
-1. Fork this repository.
-2. Create a branch for your feature (`git checkout -b my-feature`).
-3. Commit your changes (`git commit -am 'Adding new feature'`).
-4. Push to your repository (`git push origin my-feature`).
-5. Open a Pull Request.
-
-## License
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
