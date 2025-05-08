@@ -11,6 +11,8 @@ app.use(cors())
 
 app.use("/", productRoutes)
 app.use("/", userRoutes)
-app.use("", auth, cartRoutes)
+app.use("/", auth, cartRoutes)
 
-app.listen(3000, () => console.log("Running server"))
+const PORT = process.env.PORT;
+
+app.listen(PORT, () => console.log(`Running server on port ${PORT}`))

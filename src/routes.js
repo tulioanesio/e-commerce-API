@@ -10,7 +10,7 @@ router.post("/register", registerUser)
 router.post("/login", loginUser)
 
 router.get("/", getAllProducts)
-// router.get(`/details/${id}`, detailProduct)
+router.get("/product/:id", detailProduct)
 
 router.get("/cart", getCart)
 router.get("/checkout", checkout)

@@ -10,15 +10,16 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 export const registerUser = async (req, res) => {
 
+    const user = req.body;
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br)$/;
     
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(user.email)) {
       return res.status(400).json({ message: "Email inválido, precisa conter um domínio válido!" });
     }
   
     try {
-    const user = req.body;
-
+    
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(user.password, salt);
 
