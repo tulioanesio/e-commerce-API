@@ -54,6 +54,9 @@ To run this project locally, follow the steps below:
      ```env
      DATABASE_URL="postgresql://username:password@localhost:5432/database_name?schema=public"
      JWT_SECRET="your_jwt_secret_key"
+     POSTGRES_USER: "your_postgres_user"
+     POSTGRES_PASSWORD: "your_postgres_password"
+     POSTGRES_DB: "your_postgres_database"
      ```
 
    - Replace `username`, `password`, `localhost`, `5432`, and `database_name` with your PostgreSQL credentials and database details.
