@@ -38,7 +38,7 @@ To run this project locally, follow the steps below:
    - Clone the repository to your local machine using the command:
 
      ```bash
-     git clone https://github.com/your-username/e-commerce-api.git
+     git clone https://github.com/tulioanesio/e-commerce-API.git
      ```
 
 2. **Install the dependencies**:
@@ -54,6 +54,9 @@ To run this project locally, follow the steps below:
      ```env
      DATABASE_URL="postgresql://username:password@localhost:5432/database_name?schema=public"
      JWT_SECRET="your_jwt_secret_key"
+     POSTGRES_USER: "your_postgres_user"
+     POSTGRES_PASSWORD: "your_postgres_password"
+     POSTGRES_DB: "your_postgres_database"
      ```
 
    - Replace `username`, `password`, `localhost`, `5432`, and `database_name` with your PostgreSQL credentials and database details.
@@ -92,12 +95,3 @@ To run this project locally, follow the steps below:
 
      The API will be available at: [http://localhost:3000](http://localhost:3000)
 
-## Live Demo
-
-The project is deployed online via **Vercel**:
-
-- [**E-commerce API**](https://e-commerce-api.vercel.app/)
-
-
-
-This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
