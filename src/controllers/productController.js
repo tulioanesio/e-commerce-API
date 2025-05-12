@@ -16,7 +16,6 @@ export const getAllProducts = async (req, res) => {
 };
 
 export const detailProduct = async (req, res) => {
-
   try {
     const product = await prisma.product.findUnique({
       where: {id: Number(req.params.id)},

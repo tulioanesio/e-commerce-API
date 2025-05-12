@@ -12,9 +12,9 @@ router.post("/login", loginUser)
 router.get("/", getAllProducts)
 router.get("/product/:id", detailProduct)
 
-router.get("/cart", getCart)
-router.post("/cart/add/:id", getCart)
-router.get("/checkout", checkout)
+router.get("/cart", auth, getCart)
+router.post("/cart/add/:id", auth, postCart)
+router.get("/checkout", auth, checkout)
 
 
 export default router

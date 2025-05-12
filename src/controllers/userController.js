@@ -15,7 +15,7 @@ export const registerUser = async (req, res) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br)$/;
     
     if (!emailRegex.test(user.email)) {
-      return res.status(400).json({ message: "Email inválido, precisa conter um domínio válido!" });
+      return res.status(400).json({ message: "Invalid email, must contain a valid domain!" });
     }
   
     try {
