@@ -18,11 +18,10 @@ export const getAllProducts = async (req, res) => {
 export const detailProduct = async (req, res) => {
   try {
     const product = await prisma.product.findUnique({
-      where: {id: Number(req.params.id)},
-      omit: { id: true}
-    })
+      where: { id: Number(req.params.id) },
+      omit: { id: true },
+    });
     res.status(200).json({ message: "Products successfully listed", product });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
