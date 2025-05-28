@@ -79,10 +79,8 @@ To run this project locally, follow the steps below:
    - Once Docker is installed, run the following command to start a PostgreSQL container:
 
      ```bash
-     docker run --name postgres -e POSTGRES_PASSWORD=yourpassword -p 5432:5432 -d postgres
+     docker run --name postgres -e POSTGRES_PASSWORD=yourpassword -p 5433:5432 -d postgres
      ```
-
-   - Ensure your PostgreSQL container is running and accessible at `localhost:5432`.
 
 6. **Initialize Prisma**:
    - Run the following command to set up the Prisma client and database:
