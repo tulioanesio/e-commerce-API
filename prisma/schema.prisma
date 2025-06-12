@@ -28,6 +28,7 @@ model Product {
   price       Float
   description String
   stock       Int
+  imageUrl    String
   cartItems   CartItem[]
 }
 
