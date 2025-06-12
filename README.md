@@ -16,11 +16,11 @@ This repository contains the **backend** of an e-commerce system built with **No
 
 The API supports the following features:
 
+- **Product Listing**: Retrieves all products available in the catalog.
 - **User Registration**: Allows users to create accounts with encrypted passwords.
 - **User Login**: Verifies credentials and returns a JWT token for authenticated access.
-- **Product Management**: Allows adding, editing, deleting, and listing products in the e-commerce system.
-- **Shopping Cart**: Authenticated users can add items to the cart and complete the purchase.
-- **Protected Route**: Lists all orders made by an authenticated user (requires JWT token).
+- **Product Details**: Returns detailed information about a specific product by its ID.
+- **Shopping Cart Management**: Authenticated users can add or remove products from their cart using the product ID (protected route).
 
 ## Prerequisites
 
@@ -66,19 +66,23 @@ To run this project locally, follow the steps below:
      ```bash
      node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
      ```
+4. **Insert Database**:
+   - To populates the database with initial product data, run:
 
-4. **Set up Docker**:
+     ```bash
+     node prisma/seed.js
+     ```
+
+5. **Set up Docker**:
    - You can use Docker to run the PostgreSQL database by setting up a Docker container. If you haven't installed Docker, follow the instructions on the [Docker website](https://www.docker.com/get-started).
 
    - Once Docker is installed, run the following command to start a PostgreSQL container:
 
      ```bash
-     docker run --name postgres -e POSTGRES_PASSWORD=yourpassword -p 5432:5432 -d postgres
+     docker run --name postgres -e POSTGRES_PASSWORD=yourpassword -p 5433:5432 -d postgres
      ```
 
-   - Ensure your PostgreSQL container is running and accessible at `localhost:5432`.
-
-5. **Initialize Prisma**:
+6. **Initialize Prisma**:
    - Run the following command to set up the Prisma client and database:
 
      ```bash
@@ -86,7 +90,7 @@ To run this project locally, follow the steps below:
      npx prisma generate
      ```
 
-6. **Start the server**:
+7. **Start the server**:
    - To start the backend server, run:
 
      ```bash
