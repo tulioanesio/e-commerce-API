@@ -20,6 +20,14 @@ export const registerUser = async (req, res) => {
   }
 
   try {
+    const existingUser = await prisma.user.findUnique({
+      where: { email: user.email },
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registred." });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(user.password, salt);
 
@@ -30,7 +38,14 @@ export const registerUser = async (req, res) => {
         password: hashPassword,
       },
     });
-    res.status(201).json(userDB);
+
+    const token = jwt.sign(
+      { id: userDB.id, name: userDB.name, email: userDB.email },
+      JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.status(201).json({ token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error!" });
@@ -52,12 +67,11 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(userInfo.password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1d" });
-
-    res.status(200).json(token);
+    const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, JWT_SECRET, { expiresIn: "1d" });
+    res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ message: "Server error!" });
   }
