@@ -1,6 +1,6 @@
 # E-commerce API
 
-This repository contains the **backend** of an e-commerce system built with **Node.js**, **Express**, **Prisma ORM**, **PostgreSQL**, **JWT**, **Bcrypt**, and **Docker**.
+This repository contains the **backend** of an [e-commerce](https://github.com/tulioanesio/empire-store) system built with **Node.js**, **Express**, **Prisma ORM**, **PostgreSQL**, **JWT**, **Bcrypt**, and **Docker**.
 
 ## Technologies Used
 
