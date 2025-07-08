@@ -11,12 +11,13 @@ const JWT_SECRET = process.env.JWT_SECRET;
 export const registerUser = async (req, res) => {
   const user = req.body;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.(com|br)$/;
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
   if (!emailRegex.test(user.email)) {
     return res
       .status(400)
-      .json({ message: "Invalid email, must contain a valid domain!" });
+      .json({ message: "Invalid email, please include a domain!" });
   }
 
   try {
