@@ -62,6 +62,7 @@ export const postCart = async (req, res) => {
           quantity: 1,
           productName: product.name,
           productPrice: product.price,
+          productImageUrl: product.imageUrl,
         },
       });
     }
@@ -74,7 +75,7 @@ export const postCart = async (req, res) => {
 };
 
 export const removeCart = async (req, res) => {
-  const itemId = parseInt(req.params.id); // Nesse caso o ID é do cartItem
+  const itemId = parseInt(req.params.id); 
 
   try {
     const cartItem = await prisma.cartItem.delete({
