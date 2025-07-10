@@ -101,7 +101,9 @@ export const getCart = async (req, res) => {
         userId,
       },
       include: {
-        items: true,
+        items: {
+          orderBy: { id: "asc"},
+        }
       },
     });
 
