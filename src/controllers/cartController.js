@@ -1,6 +1,10 @@
+import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
+import Stripe from "stripe";
 
+dotenv.config();
 const prisma = new PrismaClient();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const postCart = async (req, res) => {
   const productId = parseInt(req.params.id);
@@ -15,16 +19,15 @@ export const postCart = async (req, res) => {
       where: { id: productId },
     });
 
-    if (!product) {
-      return res.status(404).json({ message: "Product not found." });
+    if (!productId || isNaN(productId)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or missing product ID." });
     }
 
     let cart = await prisma.cart.findFirst({
       where: {
         userId,
-        items: {
-          some: {},
-        },
       },
     });
 
@@ -75,13 +78,13 @@ export const postCart = async (req, res) => {
 };
 
 export const removeCart = async (req, res) => {
-  const itemId = parseInt(req.params.id); 
+  const itemId = parseInt(req.params.id);
 
   try {
     const cartItem = await prisma.cartItem.delete({
       where: {
         id: itemId,
-      }
+      },
     });
 
     res.status(200).json({ message: "Item deletado com sucesso", cartItem });
@@ -90,7 +93,6 @@ export const removeCart = async (req, res) => {
     res.status(400).json({ message: "Não foi possível deletar o item" });
   }
 };
-
 
 export const getCart = async (req, res) => {
   const userId = req.userId;
@@ -102,8 +104,8 @@ export const getCart = async (req, res) => {
       },
       include: {
         items: {
-          orderBy: { id: "asc"},
-        }
+          orderBy: { id: "asc" },
+        },
       },
     });
 
@@ -120,4 +122,71 @@ export const getCart = async (req, res) => {
   }
 };
 
-export const checkout = async (req, res) => {};
+export const checkout = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const cart = await prisma.cart.findFirst({
+      where: { userId },
+      include: { items: true },
+    });
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
+
+    const line_items = cart.items.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.productName,
+          images: [item.productImageUrl],
+        },
+        unit_amount: Math.round(item.productPrice * 100),
+      },
+      quantity: item.quantity,
+    }));
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      billing_address_collection: "required",
+      shipping_address_collection: {
+        allowed_countries: ["BR", "US"],
+      },
+      line_items,
+      success_url: `${process.env.BASE_URL}/success`,
+      cancel_url: `${process.env.BASE_URL}/cancel`,
+    });
+
+    res.status(200).json({ url: session.url });
+  } catch (error) {
+    console.error("Stripe checkout error:", error);
+    res.status(500).json({ message: "Failed to create checkout session" });
+  }
+};
+
+export const clearCart = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const cart = await prisma.cart.findFirst({
+      where: { userId },
+    });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found." });
+    }
+
+    await prisma.cartItem.deleteMany({
+      where: {
+        cartId: cart.id,
+      },
+    });
+
+    res.status(200).json({ message: "Cart cleared successfully." });
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    res.status(500).json({ message: "Failed to clear cart." });
+  }
+};

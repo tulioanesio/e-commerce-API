@@ -2,7 +2,7 @@ import express from "express";
 import auth from "./middlewares/auth.js"
 import { registerUser, loginUser } from "./controllers/userController.js";
 import { getAllProducts, detailProduct} from "./controllers/productController.js";
-import { getCart, removeCart, postCart, checkout} from "./controllers/cartController.js";
+import { getCart, removeCart, postCart, checkout, clearCart} from "./controllers/cartController.js";
 
 const router = express.Router()
 
@@ -16,6 +16,7 @@ router.get("/cart", auth, getCart)
 router.delete("/cart/:id", auth, removeCart)
 router.post("/cart/:id", auth, postCart)
 router.get("/checkout", auth, checkout)
+router.delete("/clear", auth, clearCart);
 
 
 export default router
