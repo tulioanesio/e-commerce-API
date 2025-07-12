@@ -13,11 +13,32 @@ export const registerUser = async (req, res) => {
 
   const emailRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  const hasNumber = /\d/;
+
+  if (!user.name || user.name.trim() === "" || user.name === Number) {
+    return res.status(400).json({ message: "Designation is required." });
+  }
+
+  if (hasNumber.test(user.name)) {
+    return res.status(400).json({ message: "Designation cannot contain numbers." });
+  }
+
+  if (!user.email || user.email.trim() === "") {
+    return res.status(400).json({ message: "Imperial ID is required." });
+  }
 
   if (!emailRegex.test(user.email)) {
+    return res.status(400).json({ message: "Imperial ID format is invalid." });
+  }
+
+  if (!user.password || user.password.trim() === "") {
+    return res.status(400).json({ message: "Access Code is required." });
+  }
+
+  if (user.password.length < 6) {
     return res
       .status(400)
-      .json({ message: "Invalid email, please include a domain!" });
+      .json({ message: "Access Code must be at least 6 characters." });
   }
 
   try {
@@ -26,7 +47,7 @@ export const registerUser = async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(409).json({ message: "Email already registred." });
+      return res.status(409).json({ message: "Imperial ID already registred." });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -68,10 +89,14 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(userInfo.password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Incorrect password" });
+      return res.status(401).json({ message: "Incorrect acess code" });
     }
 
-    const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign(
+      { id: user.id, name: user.name, email: user.email },
+      JWT_SECRET,
+      { expiresIn: "1d" }
+    );
     res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ message: "Server error!" });
