@@ -1,6 +1,6 @@
 # E-commerce API
 
-This repository contains the **backend** of an [e-commerce](https://github.com/tulioanesio/empire-store) system built with **Node.js**, **Express**, **Prisma ORM**, **PostgreSQL**, **JWT**, **Bcrypt**, and **Docker**.
+This repository contains the **backend** of an [e-commerce](https://github.com/tulioanesio/empire-store) system built with **Node.js**, **Express**, **Prisma ORM**, **PostgreSQL**, **JWT**, **Bcrypt**, **Docker** and **Stripe**.
 
 ## Technologies Used
 
@@ -11,6 +11,7 @@ This repository contains the **backend** of an [e-commerce](https://github.com/t
 - **JWT (JSON Web Tokens)** – Authentication and authorization mechanism.
 - **Bcrypt** – Secure hashing algorithm for password encryption.
 - **Docker** – Containerization platform for building and running applications in isolated environments.
+- **Stripe** – API in test environment used to checkout products.
 
 ## Features
 
@@ -21,6 +22,7 @@ The API supports the following features:
 - **User Login**: Verifies credentials and returns a JWT token for authenticated access.
 - **Product Details**: Returns detailed information about a specific product by its ID.
 - **Shopping Cart Management**: Authenticated users can add or remove products from their cart using the product ID (protected route).
+- **Checkout**: Authenticated users, if they have products added to the cart, can perform checkout, generating and redirecting the user to a payment link.
 
 ## Prerequisites
 
@@ -29,6 +31,7 @@ Make sure you have the following installed:
 - **Node.js**: Download and install it from the [official Node.js website](https://nodejs.org/).
 - **PostgreSQL**: Install PostgreSQL from [PostgreSQL official website](https://www.postgresql.org/download/).
 - **Docker**: Install Docker from [Docker official website](https://www.docker.com/products/docker-desktop).
+- **Stripe**: Create an account on [Stripe offical website](https://stripe.com)
 
 ## Installation
 
@@ -54,9 +57,9 @@ To run this project locally, follow the steps below:
      ```env
      DATABASE_URL="postgresql://username:password@localhost:5432/database_name?schema=public"
      JWT_SECRET="your_jwt_secret_key"
-     POSTGRES_USER: "your_postgres_user"
-     POSTGRES_PASSWORD: "your_postgres_password"
-     POSTGRES_DB: "your_postgres_database"
+     STRIPE_SECRET_KEY="your_stripe_secret_key"
+     BASE_URL="your_frontend_baseUrl"
+     PORT="3000"
      ```
 
    - Replace `username`, `password`, `localhost`, `5432`, and `database_name` with your PostgreSQL credentials and database details.
@@ -66,6 +69,8 @@ To run this project locally, follow the steps below:
      ```bash
      node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
      ```
+
+   - After creating a Stripe account, you can enable test mode to obtain your STRIPE_SECRET_KEY.
 4. **Insert Database**:
    - To populates the database with initial product data, run:
 
@@ -94,8 +99,8 @@ To run this project locally, follow the steps below:
    - To start the backend server, run:
 
      ```bash
-     npm start
+     node src/server.js
      ```
 
-     The API will be available at: [http://localhost:3000](http://localhost:3000)
+     The API can be tested using applications like **Postman** or by running **npx prisma studio** on console.
 
