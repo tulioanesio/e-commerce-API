@@ -20,7 +20,9 @@ export const registerUser = async (req, res) => {
   }
 
   if (hasNumber.test(user.name)) {
-    return res.status(400).json({ message: "Designation cannot contain numbers." });
+    return res
+      .status(400)
+      .json({ message: "Designation cannot contain numbers." });
   }
 
   if (!user.email || user.email.trim() === "") {
@@ -47,7 +49,9 @@ export const registerUser = async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(409).json({ message: "Imperial ID already registred." });
+      return res
+        .status(409)
+        .json({ message: "Imperial ID already registred." });
     }
 
     const salt = await bcrypt.genSalt(10);
