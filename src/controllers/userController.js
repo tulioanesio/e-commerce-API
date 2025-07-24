@@ -74,7 +74,7 @@ export const registerUser = async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "None",
     });
 
     res.status(201).json({ message: "Authentication successful!" });
@@ -111,7 +111,7 @@ export const loginUser = async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: "None",
     });
 
     res.status(201).json({ message: "Authentication successful!" });
