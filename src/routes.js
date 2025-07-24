@@ -1,6 +1,6 @@
 import express from "express";
 import auth from "./middlewares/auth.js"
-import { registerUser, loginUser } from "./controllers/userController.js";
+import { registerUser, loginUser, tokenUser, logoutUser } from "./controllers/userController.js";
 import { getAllProducts, detailProduct} from "./controllers/productController.js";
 import { getCart, removeCart, postCart, checkout, clearCart} from "./controllers/cartController.js";
 
@@ -8,6 +8,8 @@ const router = express.Router()
 
 router.post("/register", registerUser)
 router.post("/login", loginUser)
+router.get("/me", tokenUser)
+router.get("/logout", logoutUser)
 
 router.get("/home", getAllProducts)
 router.get("/product/:id", detailProduct)

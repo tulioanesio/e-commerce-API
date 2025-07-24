@@ -3,13 +3,17 @@ import express from "express";
 import productRoutes from "./routes.js"
 import userRoutes from "./routes.js"
 import cartRoutes from "./routes.js"
-import auth from "./middlewares/auth.js"
 import cors from "cors"
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express()
 app.use(express.json())
-app.use(cors())
+app.use(cookieParser())
+app.use(cors({
+    origin: process.env.BASE_URL,
+    credentials: true
+}))
 
 app.use("/", productRoutes)
 app.use("/", userRoutes)

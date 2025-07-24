@@ -71,7 +71,13 @@ export const registerUser = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.status(201).json({ token });
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    });
+
+    res.status(201).json({ message: "Authentication successful!" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error!" });
@@ -93,7 +99,7 @@ export const loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(userInfo.password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ message: "Incorrect acess code" });
+      return res.status(401).json({ message: "Incorrect access code" });
     }
 
     const token = jwt.sign(
@@ -101,8 +107,39 @@ export const loginUser = async (req, res) => {
       JWT_SECRET,
       { expiresIn: "1d" }
     );
-    res.status(200).json({ token });
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+    });
+
+    res.status(201).json({ message: "Authentication successful!" });
   } catch (err) {
-    res.status(500).json({ message: "Server error!" });
+    res.status(500).json({ message: "Erro ao fazer login" });
   }
+};
+
+export const tokenUser = async (req, res) => {
+  const token = req.cookies.access_token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    res.status(200).json({ user: decoded });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+export const logoutUser = (req, res) => {
+  res.clearCookie("access_token", {
+    httpOnly: true,
+    sameSite: "lax",
+  });
+  res.status(200).json({ message: "Logout successful!" });
 };
