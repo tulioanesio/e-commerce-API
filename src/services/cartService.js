@@ -87,10 +87,10 @@ export const removeCart = async (req, res) => {
       },
     });
 
-    res.status(200).json({ message: "Item deletado com sucesso", cartItem });
+    res.status(200).json({ message: "Item deleted successfully.", cartItem });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: "Não foi possível deletar o item" });
+    res.status(400).json({ message: "Could not delete item." });
   }
 };
 
