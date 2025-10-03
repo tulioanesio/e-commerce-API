@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
-import productRoutes from "./routes.js"
-import userRoutes from "./routes.js"
-import cartRoutes from "./routes.js"
+import productRoutes from "./controllers/productController.js"
+import userRoutes from "./controllers/userController.js"
+import cartRoutes from "./controllers/cartController.js"
 import cors from "cors"
 import cookieParser from "cookie-parser";
 

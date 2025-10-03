@@ -1,50 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+import express from "express";
+import { getAllProducts, detailProduct} from "../services/productService.js";
 
-const prisma = new PrismaClient();
+const router = express.Router()
 
-export const getAllProducts = async (req, res) => {
-  const search = req.query.search || "";
+router.get("/home", getAllProducts)
+router.get("/product/:id", detailProduct)
 
-  try {
-    let products;
-
-    if (search) {
-      products = await prisma.product.findMany({
-        where: {
-          name: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-      });
-    } else {
-
-      products = await prisma.product.findMany({
-        select: {
-          id: true,
-          name: true,
-          price: true,
-          imageUrl: true,
-        },
-      });
-    }
-
-    res.status(200).json({ message: "Products successfully listed", products });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server failure" });
-  }
-};
-
-export const detailProduct = async (req, res) => {
-  try {
-    const product = await prisma.product.findUnique({
-      where: { id: Number(req.params.id) },
-    });
-
-    res.status(200).json({ message: "Product successfully listed", product });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+export default router
